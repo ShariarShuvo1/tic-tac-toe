@@ -4,270 +4,267 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/bg_star">
+    android:background="#5d00f7"
+    tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/checkerbox"
+        android:id="@+id/box_bg2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.555"
+        app:srcCompat="@drawable/tiles_bg_360x360" />
+
+    <ImageView
+        android:id="@+id/player_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/box_bg2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/checker_box" />
-
-    <ImageButton
-        android:id="@+id/restart_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkerbox"
-        app:layout_constraintVertical_bias="0.333"
-        app:srcCompat="@drawable/restart"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <TextView
-        android:id="@+id/credit_box"
-        android:layout_width="231dp"
-        android:layout_height="29dp"
-        android:text="Made by Shariar Islam Shuvo"
-        android:textColor="#FF0000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restart_button"
-        app:layout_constraintVertical_bias="0.407" />
-
-    <ImageView
-        android:id="@+id/display_frame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/checkerbox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.554"
-        app:srcCompat="@drawable/display" />
-
-    <TextView
-        android:id="@+id/display"
-        android:layout_width="175dp"
-        android:layout_height="89dp"
-        android:text="Player 1:"
-        android:textAlignment="center"
-        android:textColor="#FB0303"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/display_frame"
-        app:layout_constraintEnd_toEndOf="@+id/display_frame"
-        app:layout_constraintHorizontal_bias="0.514"
-        app:layout_constraintStart_toStartOf="@+id/display_frame"
-        app:layout_constraintTop_toTopOf="@+id/display_frame"
-        app:layout_constraintVertical_bias="0.585" />
+        app:srcCompat="@drawable/oplayer_120x180" />
 
     <ImageButton
         android:id="@+id/box1"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#00FFFFFF"
+        android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/box4"
         app:layout_constraintEnd_toStartOf="@+id/box2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageButton
         android:id="@+id/box2"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#00FFFFFF"
+        android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/box5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageButton
         android:id="@+id/box3"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#00FFFFFF"
+        android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/box6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toEndOf="@+id/box2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageButton
         android:id="@+id/box4"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/box2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toStartOf="@+id/box5"
+        app:layout_constraintHorizontal_bias="0.366"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageButton
         android:id="@+id/box5"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageButton
         android:id="@+id/box6"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/box2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toEndOf="@+id/box5"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageButton
         android:id="@+id/box7"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
         app:layout_constraintEnd_toStartOf="@+id/box8"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.366"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
         app:layout_constraintTop_toBottomOf="@+id/box4"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintVertical_bias="0.733" />
 
     <ImageButton
         android:id="@+id/box8"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
         app:layout_constraintTop_toBottomOf="@+id/box5"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintVertical_bias="0.733" />
 
     <ImageButton
         android:id="@+id/box9"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toEndOf="@+id/box8"
         app:layout_constraintTop_toBottomOf="@+id/box6"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.733" />
+
+    <ImageButton
+        android:id="@+id/restart_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/box_bg2"
+        app:srcCompat="@drawable/restart_360x128"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
-        android:id="@+id/horizontal_1"
-        android:layout_width="250dp"
-        android:layout_height="7dp"
-        app:layout_constraintBottom_toBottomOf="@+id/checkerbox"
-        app:layout_constraintEnd_toEndOf="@+id/checkerbox"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="@+id/checkerbox"
-        app:layout_constraintTop_toTopOf="@+id/checkerbox"
-        app:layout_constraintVertical_bias="0.171" />
+        android:id="@+id/line_hr_up"
+        android:layout_width="340dp"
+        android:layout_height="73dp"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2"
+        app:layout_constraintVertical_bias="0.08" />
 
     <ImageView
-        android:id="@+id/horizontal_2"
-        android:layout_width="250dp"
-        android:layout_height="7dp"
-        app:layout_constraintBottom_toBottomOf="@+id/checkerbox"
-        app:layout_constraintEnd_toEndOf="@+id/checkerbox"
-        app:layout_constraintStart_toStartOf="@+id/checkerbox"
-        app:layout_constraintTop_toTopOf="@+id/checkerbox" />
+        android:id="@+id/line_hr_mid"
+        android:layout_width="340dp"
+        android:layout_height="73dp"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageView
-        android:id="@+id/horizontal_3"
-        android:layout_width="250dp"
-        android:layout_height="7dp"
-        app:layout_constraintBottom_toBottomOf="@+id/checkerbox"
-        app:layout_constraintEnd_toEndOf="@+id/checkerbox"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="@+id/checkerbox"
-        app:layout_constraintTop_toTopOf="@+id/checkerbox"
-        app:layout_constraintVertical_bias="0.802" />
+        android:id="@+id/line_hr_down"
+        android:layout_width="340dp"
+        android:layout_height="73dp"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2"
+        app:layout_constraintVertical_bias="0.923" />
 
     <ImageView
-        android:id="@+id/vertical_1"
-        android:layout_width="7dp"
-        android:layout_height="250dp"
-        app:layout_constraintBottom_toBottomOf="@+id/checkerbox"
-        app:layout_constraintEnd_toEndOf="@+id/checkerbox"
-        app:layout_constraintHorizontal_bias="0.157"
-        app:layout_constraintStart_toStartOf="@+id/checkerbox"
-        app:layout_constraintTop_toTopOf="@+id/checkerbox"
-        app:layout_constraintVertical_bias="0.49" />
+        android:id="@+id/line_vr_left"
+        android:layout_width="73dp"
+        android:layout_height="340dp"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageView
-        android:id="@+id/vertical_2"
-        android:layout_width="7dp"
-        android:layout_height="250dp"
-        app:layout_constraintBottom_toBottomOf="@+id/checkerbox"
-        app:layout_constraintEnd_toEndOf="@+id/checkerbox"
-        app:layout_constraintStart_toStartOf="@+id/checkerbox"
-        app:layout_constraintTop_toTopOf="@+id/checkerbox"
-        app:layout_constraintVertical_bias="0.49" />
+        android:id="@+id/line_vr_mid"
+        android:layout_width="73dp"
+        android:layout_height="340dp"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageView
-        android:id="@+id/vertical_3"
-        android:layout_width="7dp"
-        android:layout_height="250dp"
-        app:layout_constraintBottom_toBottomOf="@+id/checkerbox"
-        app:layout_constraintEnd_toEndOf="@+id/checkerbox"
-        app:layout_constraintHorizontal_bias="0.838"
-        app:layout_constraintStart_toStartOf="@+id/checkerbox"
-        app:layout_constraintTop_toTopOf="@+id/checkerbox"
-        app:layout_constraintVertical_bias="0.49" />
+        android:id="@+id/line_vr_right"
+        android:layout_width="73dp"
+        android:layout_height="340dp"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintHorizontal_bias="0.923"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageView
-        android:id="@+id/tangent_LtoR"
-        android:layout_width="274dp"
-        android:layout_height="274dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/line_corner_left_to_right_up"
+        android:layout_width="382dp"
+        android:layout_height="382dp"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
 
     <ImageView
-        android:id="@+id/tangent_RtoL"
-        android:layout_width="274dp"
-        android:layout_height="274dp"
+        android:id="@+id/line_corner_left_to_right_down"
+        android:layout_width="382dp"
+        android:layout_height="382dp"
         android:rotation="90"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/box_bg2"
+        app:layout_constraintStart_toStartOf="@+id/box_bg2"
+        app:layout_constraintTop_toTopOf="@+id/box_bg2" />
+
+    <ImageView
+        android:id="@+id/win_page"
+        android:layout_width="360dp"
+        android:layout_height="140dp"
+        app:layout_constraintBottom_toTopOf="@+id/box_bg2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/winner_sign"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="@+id/win_page"
+        app:layout_constraintEnd_toEndOf="@+id/win_page"
+        app:layout_constraintHorizontal_bias="0.053"
+        app:layout_constraintStart_toStartOf="@+id/win_page"
+        app:layout_constraintTop_toTopOf="@+id/win_page"
+        app:layout_constraintVertical_bias="0.425" />
+
+    <ImageView
+        android:id="@+id/tie"
+        android:layout_width="360dp"
+        android:layout_height="140dp"
+        app:layout_constraintBottom_toTopOf="@+id/box_bg2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shariar Islam Shuvo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.013"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.004" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
