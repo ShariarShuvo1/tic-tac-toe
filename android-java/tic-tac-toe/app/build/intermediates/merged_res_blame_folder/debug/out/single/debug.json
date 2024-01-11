@@ -1,0 +1,142 @@
+[
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_line_hoizontal_73x340.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/line_hoizontal_73x340.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_playagain_360x128.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/playagain_360x128.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_circle_100x100.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/circle_100x100.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/xml_data_extraction_rules.xml.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/raw_win_sound.mp3.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/raw/win_sound.mp3"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_cross_100x100.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/cross_100x100.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_line_veticle_340x73.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/line_veticle_340x73.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable-anydpi-v24_ic_launcher_foreground.xml.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-pngs-24:/drawable-anydpi-v24/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/raw_tie_sound.mp3.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/raw/tie_sound.mp3"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_xplayer_120x180.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/xplayer_120x180.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_line_left_to_up.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/line_left_to_up.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_win_page.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/win_page.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_tie.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/tie.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/raw_wrong_click.mp3.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/raw/wrong_click.mp3"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/xml_backup_rules.xml.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/raw_o_sound.mp3.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/raw/o_sound.mp3"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_oplayer_120x180.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/oplayer_120x180.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_restart_360x128.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/restart_360x128.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_line_left_to_down.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/line_left_to_down.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/raw_x_sound.mp3.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/raw/x_sound.mp3"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/layout_activity_main.xml.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/drawable_tiles_bg_360x360.png.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/drawable/tiles_bg_360x360.png"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.shariarshuvo1.tictactoe.app-merged_res-28:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.shariarshuvo1.tictactoe.app-main-30:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    }
+]
