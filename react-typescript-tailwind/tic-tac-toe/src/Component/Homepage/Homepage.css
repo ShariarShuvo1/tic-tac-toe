@@ -1,0 +1,14 @@
+.scrollbar-css::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scrollbar-css::-webkit-scrollbar-thumb {
+    background: rgb(200, 123, 255, 0.4);
+    background: linear-gradient(32deg, rgba(200, 123, 255, 0.4) 0%, rgba(127, 0, 158, 0.4) 49%, rgba(110, 69, 199, 0.4) 73%, rgba(94, 0, 255, 0.4) 100%);
+    border-radius: 25px;
+}
+
+.scrollbar-css::-webkit-scrollbar-thumb:hover {
+    background: rgb(200, 123, 255);
+    background: linear-gradient(32deg, rgba(200, 123, 255, 1) 0%, rgba(127, 0, 158, 1) 49%, rgba(110, 69, 199, 1) 73%, rgba(94, 0, 255, 1) 100%);
+}

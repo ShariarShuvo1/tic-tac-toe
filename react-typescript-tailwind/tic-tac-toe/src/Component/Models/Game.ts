@@ -6,9 +6,9 @@ class Game {
 	slots: Slot[];
 	time: Date;
 	verdict: string;
-	winner?:string;
-
-
+	winner?: string;
+	
+	
 	constructor(player1: string, player2: string, slots: Slot[], time: Date, verdict: string, winner?: string) {
 		this.player1 = player1;
 		this.player2 = player2;
