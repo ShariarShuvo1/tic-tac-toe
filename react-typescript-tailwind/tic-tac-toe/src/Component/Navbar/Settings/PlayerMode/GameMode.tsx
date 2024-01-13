@@ -44,6 +44,7 @@ function GameMode() {
 					<button
 						className={`flex rounded-lg px-2 py-1 font-bold border-2 border-black hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out ${gameMode === 'PvAI' ? 'bg-gradient-to-tr from-orange-100 via-red-100 to-pink-100 border-orange-500 shadow-lg' : ''}`}
 						onClick={() => setGameMode('PvAI')}
+						disabled={isJoined}
 					>
 						<BsPerson size={32}/>
 						<RiComputerLine size={32}/>
@@ -53,6 +54,7 @@ function GameMode() {
 					<button
 						className={`flex rounded-lg px-2 py-1 font-bold border-2 border-black hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out ${gameMode === 'PvP' ? 'bg-gradient-to-tr from-orange-100 via-red-100 to-pink-100 border-orange-500 shadow-lg' : ''}`}
 						onClick={() => setGameMode('PvP')}
+						disabled={isJoined}
 					>
 						<BsPerson size={32}/>
 						<BsPersonFill size={32}/>
@@ -164,7 +166,7 @@ function GameMode() {
 					)}
 				</div>
 			)}
-			<PlayerInfo isHost={isHost} gameMode={gameMode}/>
+			<PlayerInfo isHost={isHost} gameMode={gameMode} setCurrentGameMode={setGameMode} isJoined={isJoined} />
 		</div>
 	);
 }
