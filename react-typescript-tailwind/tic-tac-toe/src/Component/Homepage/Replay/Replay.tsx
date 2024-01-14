@@ -1,8 +1,8 @@
-import Game from "../../Models/Game";
+import Game from "../../../Models/Game";
 import React, {useEffect, useState} from "react";
 import {MdNavigateNext, MdNavigateBefore} from "react-icons/md";
 import {CiPlay1, CiPause1} from "react-icons/ci";
-import Slot from "../../Models/Slot";
+import Slot from "../../../Models/Slot";
 
 interface PreviewProps {
 	game: Game;

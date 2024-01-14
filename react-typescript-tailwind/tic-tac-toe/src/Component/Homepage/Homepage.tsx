@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import "./Homepage.css"
 import {CiPlay1} from "react-icons/ci";
-import Slot from "../Models/Slot";
-import Game from "../Models/Game";
+import Slot from "../../Models/Slot";
+import Game from "../../Models/Game";
 import Replay from "./Replay/Replay";
 import {Modal} from "@mui/material";
 
