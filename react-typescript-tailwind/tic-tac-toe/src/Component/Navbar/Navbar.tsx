@@ -34,7 +34,7 @@ function Navbar() {
 	return (
 		<nav
 			
-			className="bg-gradient-to-br from-emerald-100 via-emerald-100 to-lime-100 border-b-2 border-gray-200 dark:border-gray-950 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-900 dark:to-gray-950"
+			className="bg-gray-300 dark:bg-gray-950 border-b-2 border-gray-200 dark:border-gray-950 "
 		>
 			<Settings
 				modalOpen={modalOpen}

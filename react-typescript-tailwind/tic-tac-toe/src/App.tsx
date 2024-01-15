@@ -4,6 +4,7 @@ import Homepage from "./Component/Homepage/Homepage"
 import Navbar from "./Component/Navbar/Navbar";
 import Player from "./Models/Player";
 import {GameContext} from "./Context/GameContext";
+import Home from "./Component/Homepage/Home";
 
 function App() {
 	const [player1, setPlayer1] = useState<Player>(new Player("Player 1", "", 9932, "Active"))
@@ -30,7 +31,8 @@ function App() {
 		>
 			<div>
 				<Navbar/>
-				<Homepage/>
+				{/*<Homepage/>*/}
+				<Home/>
 			</div>
 		</GameContext.Provider>
 	);
