@@ -33,8 +33,7 @@ function Navbar() {
 	
 	return (
 		<nav
-			
-			className="bg-gray-300 dark:bg-gray-950 border-b-2 border-gray-200 dark:border-gray-950 "
+			className="bg-cyan-100 dark:bg-gray-950 border-b-2 border-gray-200 dark:border-gray-950 "
 		>
 			<Settings
 				modalOpen={modalOpen}

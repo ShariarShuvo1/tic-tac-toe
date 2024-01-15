@@ -47,9 +47,18 @@ function GameMode() {
 		setRoomNo(generateRandomRoomNo());
 		setIsHost(true);
 		setIsJoined(true);
+		let tempPlayer1 = player1;
+		tempPlayer1.status = "Active";
+		setPlayer1(tempPlayer1);
 	};
 	
 	const leaveRoom = () => {
+		if(isHost) {
+			setPlayer1({...player1, status: "Inactive"});
+		}
+		else {
+			setPlayer2({...player2, status: "Inactive"});
+		}
 		setIsJoined(false);
 		setRoomNo("");
 		setIsHost(false);
@@ -57,6 +66,9 @@ function GameMode() {
 	
 	const joinRoom = () => {
 		setIsJoined(true);
+		let tempPlayer2 = player2;
+		tempPlayer2.status = "Active";
+		setPlayer1(tempPlayer2);
 	};
 	
 	return (

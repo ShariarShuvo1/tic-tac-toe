@@ -1,8 +1,10 @@
 import Game from "../../../Models/Game";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {MdNavigateNext, MdNavigateBefore} from "react-icons/md";
 import {CiPlay1, CiPause1} from "react-icons/ci";
 import Slot from "../../../Models/Slot";
+import Player from "../../../Models/Player";
+import {GameContext} from "../../../Context/GameContext";
 
 interface PreviewProps {
 	game: Game;
@@ -24,6 +26,10 @@ function Replay(props: PreviewProps) {
 	const [currentlyPlaying, setCurrentlyPlaying] = useState<boolean>(false);
 	const [playInterval, setPlayInterval] = useState<NodeJS.Timeout | null>(null);
 	const [gameEnd, setGameEnd] = useState<boolean>(false);
+	const buttonDesign: string = "font-bold text-black text-7xl rounded-md w-24 h-24 border-2 border-black flex justify-center items-center";
+	const buttonIncludeDesign: string = "bg-amber-100 border-orange-500 ";
+	const buttonDrawDesign: string = "bg-orange-400 ";
+	const buttonEmptyDesign: string = " ";
 	
 	function winCheck(): boolean {
 		const winningCombinations = [
@@ -45,7 +51,10 @@ function Replay(props: PreviewProps) {
 				gameBoard[a].player === gameBoard[c].player
 			) {
 				setWinningCombination(combination);
-				setCurrentStatus("Winner is: " + gameBoard[a].player);
+				let tempPlayer = gameBoard[a].player
+				if (tempPlayer){
+					setCurrentStatus("Winner is: " + tempPlayer.name);
+				}
 				setGameEnd(true);
 				return true;
 			}
@@ -114,7 +123,10 @@ function Replay(props: PreviewProps) {
 				let tempGameBoard = [...gameBoard];
 				tempGameBoard[indexToRemove] = currentSlot;
 				setGameBoard(tempGameBoard);
-				setCurrentStatus("Current Player: " + currentSlot.player);
+				let tempPlayer = currentSlot.player;
+				if(tempPlayer){
+					setCurrentStatus("Current Player: " + tempPlayer.name);
+				}
 			}
 		}
 	}
@@ -128,7 +140,10 @@ function Replay(props: PreviewProps) {
 				tempSlots[indexToInsert] = gameBoard[indexToInsert];
 				setCurrentStatus("Click Next to proceed");
 				if (tempIndexStack.length > 0) {
-					setCurrentStatus("Current Player: " + gameBoard[tempIndexStack[tempIndexStack.length - 1]].player);
+					let tempPlayer = gameBoard[tempIndexStack[tempIndexStack.length - 1]].player;
+					if(tempPlayer){
+						setCurrentStatus("Current Player: " + tempPlayer.name);
+					}
 				}
 				setSlots(tempSlots);
 				let tempGameBoard = [...gameBoard];
@@ -168,13 +183,13 @@ function Replay(props: PreviewProps) {
 	
 	return (
 		<div
-			className="min-w-72 fixed rounded-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-gradient-to-r from-teal-400 to-yellow-200">
-			<div className="flex justify-between">
-				<div className="p-2 text-xl font-bold ms-2">
+			className="min-w-80  fixed rounded-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-gradient-to-r from-teal-400 to-yellow-200">
+			<div className="flex justify-between items-center">
+				<div className="font-bold text-2xl ms-2">
 					Preview
 				</div>
 				<button onClick={closeClicked}
-				        className="p-1 ps-4 pe-4 m-2 font-bold border-2 border-black rounded-lg hover:rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:to-yellow-200">
+				        className="p-1 ps-4 pe-4 m-2 font-bold border-2 border-black rounded-lg hover:bg-amber-50">
 					Close
 				</button>
 			</div>
@@ -185,56 +200,58 @@ function Replay(props: PreviewProps) {
 			
 			<div id='a' className=" flex justify-center items-center mt-2 mb-2">
 				<div id="b" className="grid grid-cols-3 gap-2">
-					<div
-						className={`w-20 h-20 rounded-lg text-center text-7xl font-bold ${winningCombination && winningCombination.includes(0) ? "bg-gradient-to-tr from-amber-300 via-lime-500 to-green-600" : isDraw ? "bg-gradient-to-tr from-amber-500 via-lime-600 to-green-700" : "bg-gradient-to-br from-fuchsia-300 via-blue-200 to-sky-300"}`}>
-						{gameBoard[0].played ? (gameBoard[0].player === game.player1 ? '\u2717' : '\u25CB') : ""}
+					<div className="flex justify-center items-center text-center">
+						<div
+							className={`${buttonDesign} ${winningCombination && winningCombination.includes(0) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
+							{gameBoard[0].played ? (gameBoard[0].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+						</div>
 					</div>
 					<div
-						className={`w-20 h-20 rounded-lg text-center text-7xl font-bold ${winningCombination && winningCombination.includes(1) ? "bg-gradient-to-tr from-amber-300 via-lime-500 to-green-600" : isDraw ? "bg-gradient-to-tr from-amber-500 via-lime-600 to-green-700" : "bg-gradient-to-br from-fuchsia-300 via-blue-200 to-sky-300"}`}>
-						{gameBoard[1].played ? (gameBoard[1].player === game.player1 ? '\u2717' : '\u25CB') : ""}
+						className={`${buttonDesign} ${winningCombination && winningCombination.includes(1) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
+						{gameBoard[1].played ? (gameBoard[1].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					<div
-						className={`w-20 h-20 rounded-lg text-center text-7xl font-bold ${winningCombination && winningCombination.includes(2) ? "bg-gradient-to-tr from-amber-300 via-lime-500 to-green-600" : isDraw ? "bg-gradient-to-tr from-amber-500 via-lime-600 to-green-700" : "bg-gradient-to-br from-fuchsia-300 via-blue-200 to-sky-300"}`}>
-						{gameBoard[2].played ? (gameBoard[2].player === game.player1 ? '\u2717' : '\u25CB') : ""}
-					</div>
-					
-					
-					<div
-						className={`w-20 h-20 rounded-lg text-center text-7xl font-bold ${winningCombination && winningCombination.includes(3) ? "bg-gradient-to-tr from-amber-300 via-lime-500 to-green-600" : isDraw ? "bg-gradient-to-tr from-amber-500 via-lime-600 to-green-700" : "bg-gradient-to-br from-fuchsia-300 via-blue-200 to-sky-300"}`}>
-						{gameBoard[3].played ? (gameBoard[3].player === game.player1 ? '\u2717' : '\u25CB') : ""}
-					</div>
-					<div
-						className={`w-20 h-20 rounded-lg text-center text-7xl font-bold ${winningCombination && winningCombination.includes(4) ? "bg-gradient-to-tr from-amber-300 via-lime-500 to-green-600" : isDraw ? "bg-gradient-to-tr from-amber-500 via-lime-600 to-green-700" : "bg-gradient-to-br from-fuchsia-300 via-blue-200 to-sky-300"}`}>
-						{gameBoard[4].played ? (gameBoard[4].player === game.player1 ? '\u2717' : '\u25CB') : ""}
-					</div>
-					<div
-						className={`w-20 h-20 rounded-lg text-center text-7xl font-bold ${winningCombination && winningCombination.includes(5) ? "bg-gradient-to-tr from-amber-300 via-lime-500 to-green-600" : isDraw ? "bg-gradient-to-tr from-amber-500 via-lime-600 to-green-700" : "bg-gradient-to-br from-fuchsia-300 via-blue-200 to-sky-300"}`}>
-						{gameBoard[5].played ? (gameBoard[5].player === game.player1 ? '\u2717' : '\u25CB') : ""}
+						className={`${buttonDesign} ${winningCombination && winningCombination.includes(2) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
+						{gameBoard[2].played ? (gameBoard[2].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					
 					
 					<div
-						className={`w-20 h-20 rounded-lg text-center text-7xl font-bold ${winningCombination && winningCombination.includes(6) ? "bg-gradient-to-tr from-amber-300 via-lime-500 to-green-600" : isDraw ? "bg-gradient-to-tr from-amber-500 via-lime-600 to-green-700" : "bg-gradient-to-br from-fuchsia-300 via-blue-200 to-sky-300"}`}>
-						{gameBoard[6].played ? (gameBoard[6].player === game.player1 ? '\u2717' : '\u25CB') : ""}
+						className={`${buttonDesign} ${winningCombination && winningCombination.includes(3) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
+						{gameBoard[3].played ? (gameBoard[3].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					<div
-						className={`w-20 h-20 rounded-lg text-center text-7xl font-bold ${winningCombination && winningCombination.includes(7) ? "bg-gradient-to-tr from-amber-300 via-lime-500 to-green-600" : isDraw ? "bg-gradient-to-tr from-amber-500 via-lime-600 to-green-700" : "bg-gradient-to-br from-fuchsia-300 via-blue-200 to-sky-300"}`}>
-						{gameBoard[7].played ? (gameBoard[7].player === game.player1 ? '\u2717' : '\u25CB') : ""}
+						className={`${buttonDesign} ${winningCombination && winningCombination.includes(4) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
+						{gameBoard[4].played ? (gameBoard[4].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					<div
-						className={`w-20 h-20 rounded-lg text-center text-7xl font-bold ${winningCombination && winningCombination.includes(8) ? "bg-gradient-to-tr from-amber-300 via-lime-500 to-green-600" : isDraw ? "bg-gradient-to-tr from-amber-500 via-lime-600 to-green-700" : "bg-gradient-to-br from-fuchsia-300 via-blue-200 to-sky-300"}`}>
-						{gameBoard[8].played ? (gameBoard[8].player === game.player1 ? '\u2717' : '\u25CB') : ""}
+						className={`${buttonDesign} ${winningCombination && winningCombination.includes(5) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
+						{gameBoard[5].played ? (gameBoard[5].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+					</div>
+					
+					
+					<div
+						className={`${buttonDesign} ${winningCombination && winningCombination.includes(6) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
+						{gameBoard[6].played ? (gameBoard[6].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+					</div>
+					<div
+						className={`${buttonDesign} ${winningCombination && winningCombination.includes(7) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
+						{gameBoard[7].played ? (gameBoard[7].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+					</div>
+					<div
+						className={`${buttonDesign} ${winningCombination && winningCombination.includes(8) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
+						{gameBoard[8].played ? (gameBoard[8].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 				</div>
 			</div>
 			
 			<div className="flex justify-center mb-2">
 				<button disabled={currentlyPlaying} onClick={prevClicked}
-				        className="m-0.5 border-2 border-black rounded-lg hover:rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:to-yellow-200">
+				        className="m-0.5 border-2 border-black rounded-lg hover:bg-amber-50">
 					<MdNavigateBefore size={40}/>
 				</button>
 				<button
-					className="m-0.5 border-2 border-black rounded-lg hover:rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:to-yellow-200">
+					className="m-0.5 border-2 border-black rounded-lg hover:bg-amber-50">
 					{currentlyPlaying ?
 						<CiPause1 onClick={pause} size={40}/>
 						:
@@ -242,7 +259,7 @@ function Replay(props: PreviewProps) {
 					}
 				</button>
 				<button disabled={currentlyPlaying} onClick={nextClicked}
-				        className="m-0.5 border-2 border-black rounded-lg hover:rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:to-yellow-200">
+				        className="m-0.5 border-2 border-black rounded-lg hover:bg-amber-50">
 					<MdNavigateNext size={40}/>
 				</button>
 			</div>

@@ -1,9 +1,11 @@
+import Player from "./Player";
+
 class Slot {
-	player: string;
 	played: boolean;
 	time: Date | null;
+	player?: Player;
 	
-	constructor(player: string = "", played: boolean = false, time: Date | null = null) {
+	constructor( played: boolean = false, time: Date | null = null, player?: Player) {
 		this.player = player;
 		this.played = played;
 		this.time = time;

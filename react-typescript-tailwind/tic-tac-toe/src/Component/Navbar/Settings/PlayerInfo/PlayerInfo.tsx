@@ -34,6 +34,9 @@ function PlayerInfo(props: {
 			tempPlayer1.name = playerName1;
 		}
 		tempPlayer1.sign = playerSign1;
+		if(tempPlayer1.name.toLowerCase() === "lili" && tempPlayer1.name.toLowerCase() !== playerName2.toLowerCase()){
+			tempPlayer1.sign = 10084;
+		}
 		setPlayer1(tempPlayer1);
 		let tempPlayer2 = player2;
 		if (playerName2 !== "Computer") {
@@ -44,6 +47,9 @@ function PlayerInfo(props: {
 			}
 		}
 		tempPlayer2.sign = playerSign2;
+		if(tempPlayer2.name.toLowerCase() === "lili" && tempPlayer1.name.toLowerCase() !== tempPlayer2.name.toLowerCase()){
+			tempPlayer2.sign = 10084;
+		}
 		setPlayer2(tempPlayer2);
 	}, [playerName1, playerName2, playerSign1, playerSign2]);
 	

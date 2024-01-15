@@ -1,19 +1,22 @@
 import Slot from "./Slot";
+import Player from "./Player";
 
 class Game {
-	player1: string;
-	player2: string;
+	player1: Player;
+	player2: Player;
 	slots: Slot[];
 	time: Date;
+	gameType: string;
 	verdict: string;
-	winner?: string;
+	winner?: Player;
 	
 	
-	constructor(player1: string, player2: string, slots: Slot[], time: Date, verdict: string, winner?: string) {
+	constructor(player1: Player, player2: Player, slots: Slot[], time: Date, gameType: string, verdict: string, winner?: Player) {
 		this.player1 = player1;
 		this.player2 = player2;
 		this.slots = slots;
 		this.time = time;
+		this.gameType = gameType;
 		this.verdict = verdict;
 		this.winner = winner;
 	}
