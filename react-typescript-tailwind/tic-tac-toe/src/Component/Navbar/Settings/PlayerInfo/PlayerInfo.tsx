@@ -57,8 +57,14 @@ function PlayerInfo(props: {
 		setGameMode(gameMode);
 		if (gameMode === "PvAI") {
 			setPlayerName2("Computer");
+			let tempPlayer2= player2;
+			tempPlayer2.name = "Computer"
+			setPlayer2(tempPlayer2);
 		} else {
-			setPlayerName2(player2.name);
+			setPlayerName2("Player 2");
+			let tempPlayer2= player2;
+			tempPlayer2.name = "Player 2"
+			setPlayer2(tempPlayer2);
 		}
 	}, [gameMode]);
 	

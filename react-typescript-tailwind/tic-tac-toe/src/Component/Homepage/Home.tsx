@@ -181,40 +181,44 @@ function Home() {
 		}
 	}
 	
+	function PlayImpossible(){
+		let tempGameBoard = [...gameBoard];
+		let bestScore = -Infinity;
+		let move;
+		
+		for (let i = 0; i < tempGameBoard.length; i++) {
+			if (!tempGameBoard[i].played) {
+				tempGameBoard[i].player = player2;
+				tempGameBoard[i].played = true;
+				let score = miniMax(tempGameBoard, 0, false);
+				tempGameBoard[i] = new Slot();
+				
+				if (score > bestScore) {
+					bestScore = score;
+					move = i;
+				}
+			}
+		}
+		if (move !== undefined) {
+			tempGameBoard[move].player = player2;
+			tempGameBoard[move].played = true;
+			tempGameBoard[move].time = new Date();
+			setGameBoard(tempGameBoard);
+			if(!checkForWin(tempGameBoard, player2)){
+				playerToggle();
+			}
+		}
+	}
+	
 	useEffect(() => {
 		if (gameMode === "PvAI") {
 			if (currentPlayer === "player_2") {
 				if (gameDifficulty === "Easy") {
 					setTimeout(easyAI, 300);
 				} else if (gameDifficulty === "Normal") {
-					normalAI();
+					setTimeout(normalAI, 300);
 				} else if (gameDifficulty === "Impossible") {
-					let tempGameBoard = [...gameBoard];
-					let bestScore = -Infinity;
-					let move;
-					
-					for (let i = 0; i < tempGameBoard.length; i++) {
-						if (!tempGameBoard[i].played) {
-							tempGameBoard[i].player = player2;
-							tempGameBoard[i].played = true;
-							let score = miniMax(tempGameBoard, 0, false);
-							tempGameBoard[i] = new Slot();
-							
-							if (score > bestScore) {
-								bestScore = score;
-								move = i;
-							}
-						}
-					}
-					if (move !== undefined) {
-						tempGameBoard[move].player = player2;
-						tempGameBoard[move].played = true;
-						tempGameBoard[move].time = new Date();
-						setGameBoard(tempGameBoard);
-						if(!checkForWin(tempGameBoard, player2)){
-							playerToggle();
-						}
-					}
+					setTimeout(PlayImpossible, 300);
 				}
 			}
 		}
