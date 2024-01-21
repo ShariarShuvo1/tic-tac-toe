@@ -10,8 +10,6 @@ class Player{
 		this.sign = sign;
 		this.status = status;
 	}
-	
-	
 }
 
 export default Player;

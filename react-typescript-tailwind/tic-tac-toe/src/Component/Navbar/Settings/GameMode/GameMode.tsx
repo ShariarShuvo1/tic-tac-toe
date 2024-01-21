@@ -1,17 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Tooltip } from "@mui/material";
-import { BsPerson, BsPersonFill } from "react-icons/bs";
-import { RiComputerLine } from "react-icons/ri";
-import { HiGlobeAsiaAustralia } from "react-icons/hi2";
+import React, {useContext, useEffect, useState} from "react";
+import {Tooltip} from "@mui/material";
+import {BsPerson, BsPersonFill} from "react-icons/bs";
+import {RiComputerLine} from "react-icons/ri";
+import {HiGlobeAsiaAustralia} from "react-icons/hi2";
 import PlayerInfo from "../PlayerInfo/PlayerInfo";
-import { GameContext } from "../../../../Context/GameContext";
+import {GameContext} from "../../../../Context/GameContext";
+import {doc, getDocs, collection, setDoc, query, onSnapshot} from "firebase/firestore";
+import {db} from "../../../../firebase";
+import {isEmpty} from "lodash";
 
 const buttonStyles =
 	"flex rounded-lg px-2 py-1 font-bold border-2 border-black hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out";
 
 function GameMode() {
-	const [isJoined, setIsJoined] = useState(false);
-	const [isHost, setIsHost] = useState(false);
 	
 	const {
 		gameMode,
@@ -24,6 +25,10 @@ function GameMode() {
 		setPlayer1,
 		player2,
 		setPlayer2,
+		isHost,
+		setIsHost,
+		isJoined,
+		setIsJoined
 	} = useContext(GameContext);
 	
 	useEffect(() => {
@@ -43,33 +48,106 @@ function GameMode() {
 		return result;
 	};
 	
-	const generateroomNo = () => {
-		setRoomNo(generateRandomRoomNo());
-		setIsHost(true);
-		setIsJoined(true);
-		let tempPlayer1 = player1;
-		tempPlayer1.status = "Active";
-		setPlayer1(tempPlayer1);
+	const generateroomNo = async () => {
+		const newRoomNo = generateRandomRoomNo();
+		
+		const roomExists = await checkRoomExists(newRoomNo);
+		
+		if (roomExists) {
+			await generateroomNo();
+		} else {
+			
+			let docRef1 = doc(collection(db, "rooms", newRoomNo, "Player"), 'player1');
+			await setDoc(docRef1, {
+				name: player1.name,
+				sign: player1.sign,
+				type: "Host",
+				status: "Active"
+			});
+			
+			let docRef2 = doc(collection(db, "rooms", newRoomNo, "Player"), 'player2');
+			await setDoc(docRef2, {
+				name: player2.name,
+				sign: player2.sign,
+				type: "Not Host",
+				status: "Inactive"
+			});
+			
+			setRoomNo(newRoomNo);
+			setIsHost(true);
+			setIsJoined(true);
+			let tempPlayer1 = player1;
+			tempPlayer1.status = "Active";
+			setPlayer1(tempPlayer1);
+		}
 	};
 	
-	const leaveRoom = () => {
-		if(isHost) {
-			setPlayer1({...player1, status: "Inactive"});
-		}
-		else {
-			setPlayer2({...player2, status: "Inactive"});
-		}
-		setIsJoined(false);
-		setRoomNo("");
-		setIsHost(false);
+	const checkRoomExists = async (roomNo: string) => {
+		let roomRef = collection(db, 'rooms', roomNo, 'Player');
+		let roomSnapshot = await getDocs(roomRef);
+		return !isEmpty(roomSnapshot.docs);
 	};
 	
-	const joinRoom = () => {
-		setIsJoined(true);
-		let tempPlayer2 = player2;
-		tempPlayer2.status = "Active";
-		setPlayer1(tempPlayer2);
+	const leaveRoom = async () => {
+		if(isJoined){
+			if(isHost) {
+				let docRef = doc(collection(db, "rooms", roomNo, "Player"), 'player1');
+				await setDoc(docRef, {
+					name: player1.name,
+					sign: player1.sign,
+					type: "Not Host",
+					status: "Inactive"
+				});
+				setPlayer1({...player1, status: "Inactive", type: "Not Host"});
+			}
+			else {
+				let docRef = doc(collection(db, "rooms", roomNo, "Player"), 'player2');
+				await setDoc(docRef, {
+					name: player2.name,
+					sign: player2.sign,
+					type: "Not Host",
+					status: "Inactive"
+				});
+				setPlayer2({...player2, status: "Inactive", type: "Not Host"});
+			}
+			setIsJoined(false);
+			setRoomNo("");
+			setIsHost(false);
+		}
+	}
+	
+	const joinRoom = async () => {
+		const roomExists = await checkRoomExists(roomNo);
+		if(roomExists){
+			let roomRef = collection(db, 'rooms', roomNo, 'Player');
+			let roomSnapshot = await getDocs(roomRef);
+			let player1Doc = roomSnapshot.docs[0].data();
+			let player2Doc = roomSnapshot.docs[1].data();
+			if(player2Doc.status !== "Active") {
+				let tempPlayer1 = player1;
+				tempPlayer1.name = player1Doc.name;
+				tempPlayer1.sign = player1Doc.sign;
+				tempPlayer1.status = player1Doc.status;
+				tempPlayer1.type = player1Doc.type;
+				setPlayer1(tempPlayer1);
+				
+				let tempPlayer2 = player2;
+				let docRef2 = doc(collection(db, "rooms", roomNo, "Player"), 'player2');
+				await setDoc(docRef2, {
+					name: tempPlayer2.name,
+					sign: tempPlayer2.sign,
+					type: "Not Host",
+					status: "Active"
+				});
+				tempPlayer2.status = "Active";
+				tempPlayer2.type = "Not Host";
+				setIsJoined(true);
+				setPlayer2(tempPlayer2);
+			}
+			
+		}
 	};
+	
 	
 	return (
 		<div className="mt-4">

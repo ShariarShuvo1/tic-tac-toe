@@ -1,7 +1,7 @@
 import {Modal} from "@mui/material";
 import React from "react";
 import ThemeSelector from "./ThemeSelector/ThemeSelector";
-import GameMode from "./PlayerMode/GameMode";
+import GameMode from "./GameMode/GameMode";
 
 function Settings(props: {
 	modalOpen: boolean,

@@ -11,5 +11,9 @@ export const GameContext = createContext({
 	gameDifficulty: "Easy",
 	setGameDifficulty: (value: string) => {},
 	roomNo: "",
-	setRoomNo: (value: string) => {}
+	setRoomNo: (value: string) => {},
+	isHost: false,
+	setIsHost: (value: boolean) => {},
+	isJoined: false,
+	setIsJoined: (value: boolean) => {}
 });

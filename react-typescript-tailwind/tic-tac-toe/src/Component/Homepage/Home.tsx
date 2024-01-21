@@ -8,6 +8,8 @@ import Replay from "./Replay/Replay";
 import { GameContext } from "../../Context/GameContext";
 import Player from "../../Models/Player";
 import { VscDebugRestart } from "react-icons/vsc";
+import {collection, onSnapshot} from "firebase/firestore";
+import {db} from "../../firebase";
 
 function Home() {
 	const [gameBoard, setGameBoard] = useState<Slot[]>([
@@ -22,7 +24,7 @@ function Home() {
 		new Slot(),
 	]);
 	
-	const { player1, player2, gameMode, gameDifficulty } =
+	const { player1, setPlayer1, player2, setPlayer2, gameMode, gameDifficulty, roomNo, isHost } =
 		useContext(GameContext);
 	
 	const [currentPlayer, setCurrentPlayer] = useState("player_1");
@@ -324,6 +326,35 @@ function Home() {
 		setIsDraw(false);
 		setGameBegan(false);
 	}
+	
+	useEffect(() => {
+		if (gameMode==="PvO" && roomNo) {
+			const roomRef = collection(db, 'rooms', roomNo, 'Player');
+			
+			const unsubscribe = onSnapshot(roomRef, (querySnapshot) => {
+				
+				if(isHost){
+					let tempPlayer2: Player = player2;
+					tempPlayer2.name = querySnapshot.docs[1].data().name;
+					tempPlayer2.status = querySnapshot.docs[1].data().status;
+					tempPlayer2.sign = querySnapshot.docs[1].data().sign;
+					tempPlayer2.type = querySnapshot.docs[1].data().type;
+					setPlayer2(tempPlayer2);
+				}
+				else {
+					let tempPlayer1: Player = player1;
+					tempPlayer1.name = querySnapshot.docs[0].data().name;
+					tempPlayer1.status = querySnapshot.docs[0].data().status;
+					tempPlayer1.sign = querySnapshot.docs[0].data().sign;
+					tempPlayer1.type = querySnapshot.docs[0].data().type;
+					setPlayer1(tempPlayer1);
+				}
+				
+			});
+			
+			return () => unsubscribe();
+		}
+	}, [gameMode, roomNo]);
 	
 	return (
 		<div className=" bg-cyan-50 dark:bg-gray-900">

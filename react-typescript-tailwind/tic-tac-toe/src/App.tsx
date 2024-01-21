@@ -11,7 +11,8 @@ function App() {
 	const [gameMode, setGameMode] = useState<string>("PvAI");
 	const [gameDifficulty, setGameDifficulty] = useState<string>("Easy");
 	const [roomNo, setRoomNo] = useState<string>("");
-	
+	const [isHost, setIsHost] = useState<boolean>(false);
+	const [isJoined, setIsJoined] = useState<boolean>(false);
 	
 	return (
 		<GameContext.Provider
@@ -25,7 +26,11 @@ function App() {
 				gameDifficulty,
 				setGameDifficulty,
 				roomNo,
-				setRoomNo
+				setRoomNo,
+				isHost,
+				setIsHost,
+				isJoined,
+				setIsJoined
 			}}
 		>
 			<div>

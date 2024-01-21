@@ -4,6 +4,9 @@ import "./../../../Homepage/Homepage.css"
 import {RiComputerLine} from "react-icons/ri";
 import {GameContext} from "../../../../Context/GameContext";
 import UnicodeModal from "../UnicodeModal/UnicodeModal";
+import {collection, doc, setDoc} from "firebase/firestore";
+import {db} from "../../../../firebase";
+import Player from "../../../../Models/Player";
 
 function PlayerInfo(props: {
 	isHost: boolean,
@@ -15,7 +18,8 @@ function PlayerInfo(props: {
 		player2,
 		setPlayer2,
 		gameMode,
-		setGameMode
+		setGameMode,
+		roomNo
 	} = useContext(GameContext);
 	
 	const {isHost, isJoined} = props;
@@ -25,6 +29,25 @@ function PlayerInfo(props: {
 	const [playerSign2, setPlayerSign2] = useState(player2.sign);
 	const [signSelectorOpen, setSignSelectorOpen] = useState(false);
 	const [settingFor, setSettingFor] = useState('Player 1');
+	
+	const updatePlayer1 = async (tempPlayer: Player) => {
+		let docRef = doc(collection(db, "rooms", roomNo, "Player"), 'player1');
+		await setDoc(docRef, {
+			name: tempPlayer.name,
+			sign: tempPlayer.sign,
+			type: "Host",
+			status: "Active"
+		});
+	};
+	const updatePlayer2 = async (tempPlayer: Player) => {
+		let docRef = doc(collection(db, "rooms", roomNo, "Player"), 'player2');
+		await setDoc(docRef, {
+			name: tempPlayer.name,
+			sign: tempPlayer.sign,
+			type: "Host",
+			status: "Active"
+		});
+	};
 	
 	useEffect(() => {
 		let tempPlayer1 = player1;
@@ -37,6 +60,11 @@ function PlayerInfo(props: {
 		if(tempPlayer1.name.toLowerCase() === "lili" && tempPlayer1.name.toLowerCase() !== playerName2.toLowerCase()){
 			tempPlayer1.sign = 10084;
 		}
+		
+		if(gameMode === "PvO" && isHost && isJoined){
+			updatePlayer1(tempPlayer1);
+		}
+		
 		setPlayer1(tempPlayer1);
 		let tempPlayer2 = player2;
 		if (playerName2 !== "Computer") {
@@ -49,6 +77,9 @@ function PlayerInfo(props: {
 		tempPlayer2.sign = playerSign2;
 		if(tempPlayer2.name.toLowerCase() === "lili" && tempPlayer1.name.toLowerCase() !== tempPlayer2.name.toLowerCase()){
 			tempPlayer2.sign = 10084;
+		}
+		if(gameMode === "PvO" && !isHost && isJoined){
+			updatePlayer2(tempPlayer2);
 		}
 		setPlayer2(tempPlayer2);
 	}, [playerName1, playerName2, playerSign1, playerSign2]);
