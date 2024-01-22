@@ -3,6 +3,7 @@ import {IoMdSettings} from "react-icons/io";
 import {Modal} from "@mui/material";
 import Settings from "./Settings/Settings";
 import {GameContext} from "../../Context/GameContext";
+import {FaGithub} from "react-icons/fa";
 
 function Navbar() {
 	const [theme, setTheme] = useState("");
@@ -47,10 +48,18 @@ function Navbar() {
 				handleThemeSwitch={handleThemeSwitch}
 			/>
 			<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-				<span
-					className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-					Tic Tac Toe
-				</span>
+				<div className="flex justify-center items-center gap-2">
+					<div
+						className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+						Tic Tac Toe
+					</div>
+					<a className="dark:text-white" href="https://github.com/ShariarShuvo1/tic-tac-toe" target="_blank">
+						<FaGithub
+							className="hover:cursor-pointer"
+							size={30}
+						/>
+					</a>
+				</div>
 				<IoMdSettings
 					onClick={() => setModalOpen(!modalOpen)}
 					size={32}
