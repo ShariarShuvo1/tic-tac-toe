@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
 import Slot from "../../../Models/Slot";
-import Player from "../../../Models/Player";
 import {Modal, Tooltip} from "@mui/material";
 import {VscDebugRestart} from "react-icons/vsc";
 import {CiPlay1} from "react-icons/ci";
@@ -24,7 +23,7 @@ interface Props {
 
 function GameBoard({gameBoard, currentPlayer, winningCombination, isDraw, gameClicked, gameFinished, setGameFinished, setRestartClicked, restartGame, setPreviewVisible, setSelectedGame, allGames }: Props) {
 	const buttonStyle: string = 'font-bold text-black text-7xl rounded-md w-24 h-24 transition duration-100 ease-in-out border-2 border-black hover:border-yellow-900 hover:bg-amber-300 hover:shadow-3xl';
-	const {player1, player2} = useContext(GameContext);
+	const {player1, player2, gameMode, isHost} = useContext(GameContext);
 	
 	return (
 		<div>
@@ -37,7 +36,7 @@ function GameBoard({gameBoard, currentPlayer, winningCombination, isDraw, gameCl
 					className="flex justify-center items-center"
 				>
 					<div
-						className="bg-gradient-to-tr from-green-300 to-purple-600 min-w-72 rounded-lg p-4 min-w-72"
+						className="bg-gradient-to-tr from-green-300 to-purple-600 min-w-72 rounded-lg p-4"
 					>
 						{winningCombination && (
 							<div className="text-3xl mb-4 font-bold justify-center text-center">
@@ -126,7 +125,7 @@ function GameBoard({gameBoard, currentPlayer, winningCombination, isDraw, gameCl
 								className={`${buttonStyle} ${(gameBoard[index].played || winningCombination) && 'pointer-events-none'} ${
 									winningCombination && winningCombination.includes(index) ? 'bg-amber-100 border-orange-500' : ''
 								} ${isDraw && "bg-orange-400"}`}
-								disabled={gameBoard[index].played || winningCombination !== null || isDraw}
+								disabled={gameBoard[index].played || winningCombination !== null || isDraw || gameFinished || (gameMode === "PvAI" && currentPlayer === "player_2") || (gameMode === "PvO" && isHost && currentPlayer === "player_2") || (gameMode === "PvO" && !isHost && currentPlayer === "player_1")}
 							>
 								{gameBoard[index].played ? (gameBoard[index].player === player1 ? String.fromCodePoint(player1.sign) : String.fromCodePoint(player2.sign)) : ''}
 							</button>

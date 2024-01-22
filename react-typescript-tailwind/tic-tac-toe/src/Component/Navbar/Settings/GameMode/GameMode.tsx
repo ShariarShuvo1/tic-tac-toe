@@ -5,7 +5,7 @@ import {RiComputerLine} from "react-icons/ri";
 import {HiGlobeAsiaAustralia} from "react-icons/hi2";
 import PlayerInfo from "../PlayerInfo/PlayerInfo";
 import {GameContext} from "../../../../Context/GameContext";
-import {doc, getDocs, collection, setDoc, query, onSnapshot} from "firebase/firestore";
+import {doc, getDocs, collection, setDoc, query, onSnapshot, writeBatch} from "firebase/firestore";
 import {db} from "../../../../firebase";
 import {isEmpty} from "lodash";
 
@@ -28,15 +28,38 @@ function GameMode() {
 		isHost,
 		setIsHost,
 		isJoined,
-		setIsJoined
+		setIsJoined,
+		gameBegan,
+		setGameBegan
 	} = useContext(GameContext);
 	
+	// useEffect(() => {
+	// 	const tempPlayer1 = { ...player1, type: isHost ? "Host" : "Not Host" };
+	// 	const tempPlayer2 = { ...player2, type: isHost ? "Not Host" : "Host" };
+	// 	setPlayer1(tempPlayer1);
+	// 	setPlayer2(tempPlayer2);
+	// }, [isHost]);
+	const createNewSlots = async () => {
+		const batch = writeBatch(db);
+		
+		for (let i = 0; i < 9; i++) {
+			let docRef1 = doc(collection(db, "rooms", roomNo, "Slots"), `${i}`);
+			batch.set(docRef1, {
+				played: false,
+				time: null,
+				player: "0"
+			});
+		}
+		
+		await batch.commit();
+	}
+	
+	
 	useEffect(() => {
-		const tempPlayer1 = { ...player1, type: isHost ? "Host" : "Not Host" };
-		const tempPlayer2 = { ...player2, type: isHost ? "Not Host" : "Host" };
-		setPlayer1(tempPlayer1);
-		setPlayer2(tempPlayer2);
-	}, [isHost]);
+		if(!gameBegan && gameMode === "PvO" && isJoined && isHost){
+			createNewSlots();
+		}
+	}, [gameBegan, gameMode, isJoined, isHost]);
 	
 	const generateRandomRoomNo = () => {
 		let result = "";
@@ -113,6 +136,7 @@ function GameMode() {
 			setIsJoined(false);
 			setRoomNo("");
 			setIsHost(false);
+			setGameBegan(false)
 		}
 	}
 	
@@ -153,7 +177,6 @@ function GameMode() {
 		<div className="mt-4">
 			<div className="font-bold text-sm">Select a Game Mode:</div>
 			<div className="justify-evenly flex gap-2 mt-2">
-				<Tooltip title="Human Vs Computer">
 					<button
 						className={`${buttonStyles} ${gameMode === "PvAI" ? "bg-gradient-to-tr from-orange-100 via-red-100 to-pink-100 border-orange-500 shadow-lg" : ""
 						}`}
@@ -163,8 +186,6 @@ function GameMode() {
 						<BsPerson size={32} />
 						<RiComputerLine size={32} />
 					</button>
-				</Tooltip>
-				<Tooltip title="Human Vs Human">
 					<button
 						className={`${buttonStyles} ${gameMode === "PvP" ? "bg-gradient-to-tr from-orange-100 via-red-100 to-pink-100 border-orange-500 shadow-lg" : ""
 						}`}
@@ -174,8 +195,6 @@ function GameMode() {
 						<BsPerson size={32} />
 						<BsPersonFill size={32} />
 					</button>
-				</Tooltip>
-				<Tooltip title="Play Online Against Player">
 					<button
 						className={`${buttonStyles} ${gameMode === "PvO" ? "bg-gradient-to-tr from-orange-100 via-red-100 to-pink-100 border-orange-500 shadow-lg" : ""
 						}`}
@@ -184,7 +203,6 @@ function GameMode() {
 						<BsPerson size={32} />
 						<HiGlobeAsiaAustralia size={32} />
 					</button>
-				</Tooltip>
 			</div>
 			{gameMode === "PvAI" && (
 				<div>

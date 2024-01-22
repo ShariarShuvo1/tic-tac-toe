@@ -19,7 +19,8 @@ function PlayerInfo(props: {
 		setPlayer2,
 		gameMode,
 		setGameMode,
-		roomNo
+		roomNo,
+		gameBegan
 	} = useContext(GameContext);
 	
 	const {isHost, isJoined} = props;
@@ -42,9 +43,10 @@ function PlayerInfo(props: {
 	const updatePlayer2 = async (tempPlayer: Player) => {
 		let docRef = doc(collection(db, "rooms", roomNo, "Player"), 'player2');
 		await setDoc(docRef, {
+			
 			name: tempPlayer.name,
 			sign: tempPlayer.sign,
-			type: "Host",
+			type: "Not Host",
 			status: "Active"
 		});
 	};
@@ -92,10 +94,13 @@ function PlayerInfo(props: {
 			tempPlayer2.name = "Computer"
 			setPlayer2(tempPlayer2);
 		} else {
-			setPlayerName2("Player 2");
-			let tempPlayer2= player2;
-			tempPlayer2.name = "Player 2"
-			setPlayer2(tempPlayer2);
+			if(playerName2 === "Computer"){
+				setPlayerName2("Player 2");
+				let tempPlayer2= player2;
+				tempPlayer2.name = "Player 2"
+				setPlayer2(tempPlayer2);
+			}
+			
 		}
 	}, [gameMode]);
 	
@@ -117,6 +122,7 @@ function PlayerInfo(props: {
 						value={playerName1}
 						onChange={(e) => setPlayerName1(e.target.value)}
 						maxLength={8}
+						disabled={gameBegan}
 					/>
 					<button
 						className="border-2 border-black rounded-lg px-2 py-1 ml-2 w-10 font-bold hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out"
@@ -124,6 +130,7 @@ function PlayerInfo(props: {
 							setSignSelectorOpen(true);
 							setSettingFor('Player 1');
 						}}
+						disabled={gameBegan}
 					>
 						{String.fromCodePoint(playerSign1)}
 					</button>
@@ -145,7 +152,7 @@ function PlayerInfo(props: {
 						value={playerName2}
 						onChange={(e) => setPlayerName2(e.target.value)}
 						maxLength={8}
-						disabled={gameMode === 'PvAI'}
+						disabled={gameMode === 'PvAI' || gameBegan}
 					/>
 					<button
 						className="border-2 border-black rounded-lg px-2 py-1 ml-2 w-10 font-bold hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out"
@@ -153,6 +160,7 @@ function PlayerInfo(props: {
 							setSignSelectorOpen(true);
 							setSettingFor('Player 2');
 						}}
+						disabled={gameBegan}
 					>
 						{String.fromCodePoint(playerSign2)}
 					</button>

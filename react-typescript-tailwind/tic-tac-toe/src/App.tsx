@@ -6,13 +6,15 @@ import {GameContext} from "./Context/GameContext";
 import Home from "./Component/Homepage/Home";
 
 function App() {
-	const [player1, setPlayer1] = useState<Player>(new Player("Player 1", "", 9932, "Inactive"))
-	const [player2, setPlayer2] = useState<Player>(new Player("Player 2", "", 9711, "Inactive"))
+	const [player1, setPlayer1] = useState<Player>(new Player("Player 1", "Not Host", 9932, "Inactive"))
+	const [player2, setPlayer2] = useState<Player>(new Player("Player 2", "Not Host", 9711, "Inactive"))
 	const [gameMode, setGameMode] = useState<string>("PvAI");
 	const [gameDifficulty, setGameDifficulty] = useState<string>("Easy");
 	const [roomNo, setRoomNo] = useState<string>("");
 	const [isHost, setIsHost] = useState<boolean>(false);
 	const [isJoined, setIsJoined] = useState<boolean>(false);
+	const [gameBegan, setGameBegan] = useState<boolean>(false);
+	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	
 	return (
 		<GameContext.Provider
@@ -30,7 +32,11 @@ function App() {
 				isHost,
 				setIsHost,
 				isJoined,
-				setIsJoined
+				setIsJoined,
+				gameBegan,
+				setGameBegan,
+				modalOpen,
+				setModalOpen
 			}}
 		>
 			<div>

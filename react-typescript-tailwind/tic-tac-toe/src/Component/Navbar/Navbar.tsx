@@ -1,11 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {IoMdSettings} from "react-icons/io";
 import {Modal} from "@mui/material";
 import Settings from "./Settings/Settings";
+import {GameContext} from "../../Context/GameContext";
 
 function Navbar() {
-	const [modalOpen, setModalOpen] = useState(false);
 	const [theme, setTheme] = useState("");
+	
+	const {
+		modalOpen,
+		setModalOpen
+	} = useContext(GameContext);
 	
 	useEffect(() => {
 		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
