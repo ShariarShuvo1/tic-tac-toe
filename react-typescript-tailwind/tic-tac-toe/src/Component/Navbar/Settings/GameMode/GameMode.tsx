@@ -1,18 +1,24 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Tooltip} from "@mui/material";
+import React, {useContext, useEffect} from "react";
+import {Tooltip, Backdrop, CircularProgress, Snackbar, Modal} from "@mui/material";
 import {BsPerson, BsPersonFill} from "react-icons/bs";
 import {RiComputerLine} from "react-icons/ri";
 import {HiGlobeAsiaAustralia} from "react-icons/hi2";
 import PlayerInfo from "../PlayerInfo/PlayerInfo";
 import {GameContext} from "../../../../Context/GameContext";
-import {doc, getDocs, collection, setDoc, query, onSnapshot, writeBatch} from "firebase/firestore";
+import {doc, getDocs, collection, setDoc, writeBatch} from "firebase/firestore";
 import {db} from "../../../../firebase";
 import {isEmpty} from "lodash";
+import Slot from "../../../../Models/Slot";
 
 const buttonStyles =
 	"flex rounded-lg px-2 py-1 font-bold border-2 border-black hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out";
 
 function GameMode() {
+	const [loading, setLoading] = React.useState(false);
+	const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+	const [snackbarMessage, setSnackbarMessage] = React.useState("");
+	const [restartClicked, setRestartClicked] = React.useState(false);
+	const [changeModeTo, setChangeModeTo] = React.useState("");
 	
 	const {
 		gameMode,
@@ -30,15 +36,38 @@ function GameMode() {
 		isJoined,
 		setIsJoined,
 		gameBegan,
-		setGameBegan
+		setGameBegan,
+		setPlayerJoined,
+		setGameBoard,
+		setCurrentPlayer,
+		setModalOpen
 	} = useContext(GameContext);
 	
-	// useEffect(() => {
-	// 	const tempPlayer1 = { ...player1, type: isHost ? "Host" : "Not Host" };
-	// 	const tempPlayer2 = { ...player2, type: isHost ? "Not Host" : "Host" };
-	// 	setPlayer1(tempPlayer1);
-	// 	setPlayer2(tempPlayer2);
-	// }, [isHost]);
+	function restartGame() {
+		
+		if(gameMode === "PvO"){
+			if(isHost && gameBegan){
+				createNewSlots();
+			}
+		}
+		else{
+			setGameBoard([
+				new Slot(),
+				new Slot(),
+				new Slot(),
+				new Slot(),
+				new Slot(),
+				new Slot(),
+				new Slot(),
+				new Slot(),
+				new Slot(),
+			]);
+		}
+		
+		setCurrentPlayer("player_1");
+		setGameBegan(false);
+	}
+	
 	const createNewSlots = async () => {
 		const batch = writeBatch(db);
 		
@@ -72,6 +101,7 @@ function GameMode() {
 	};
 	
 	const generateroomNo = async () => {
+		setLoading(true);
 		const newRoomNo = generateRandomRoomNo();
 		
 		const roomExists = await checkRoomExists(newRoomNo);
@@ -79,7 +109,6 @@ function GameMode() {
 		if (roomExists) {
 			await generateroomNo();
 		} else {
-			
 			let docRef1 = doc(collection(db, "rooms", newRoomNo, "Player"), 'player1');
 			await setDoc(docRef1, {
 				name: player1.name,
@@ -102,7 +131,11 @@ function GameMode() {
 			let tempPlayer1 = player1;
 			tempPlayer1.status = "Active";
 			setPlayer1(tempPlayer1);
+			setSnackbarOpen(true);
+			setSnackbarMessage(`Created New Room: ${newRoomNo}`);
 		}
+		setLoading(false);
+		setPlayerJoined(true);
 	};
 	
 	const checkRoomExists = async (roomNo: string) => {
@@ -134,13 +167,20 @@ function GameMode() {
 				setPlayer2({...player2, status: "Inactive", type: "Not Host"});
 			}
 			setIsJoined(false);
-			setRoomNo("");
 			setIsHost(false);
-			setGameBegan(false)
+			setGameBegan(false);
+			setSnackbarOpen(true);
+			setSnackbarMessage(`Successfully left the room: ${roomNo}`);
+			setRoomNo("");
+		}
+		else {
+			setSnackbarOpen(true);
+			setSnackbarMessage(`You are not joined in any room`);
 		}
 	}
 	
 	const joinRoom = async () => {
+		setLoading(true);
 		const roomExists = await checkRoomExists(roomNo);
 		if(roomExists){
 			let roomRef = collection(db, 'rooms', roomNo, 'Player');
@@ -167,20 +207,87 @@ function GameMode() {
 				tempPlayer2.type = "Not Host";
 				setIsJoined(true);
 				setPlayer2(tempPlayer2);
+				setSnackbarOpen(true);
+				setSnackbarMessage(`Joined Successfully at ${roomNo}`);
 			}
-			
+			else {
+				setSnackbarOpen(true);
+				setSnackbarMessage(`Both Player are already joined at ${roomNo}`);
+			}
 		}
+		else {
+			setSnackbarOpen(true);
+			setSnackbarMessage(`Could not find room Id: ${roomNo}`);
+		}
+		setLoading(false);
 	};
-	
 	
 	return (
 		<div className="mt-4">
+			<Modal
+				open={restartClicked}
+				onClose={() => setRestartClicked(false)}
+				className="flex justify-center items-center"
+			>
+				<div className="bg-gradient-to-tr from-fuchsia-300 to-rose-200 max-w-72 rounded-lg p-4">
+					<div className="text-3xl mb-4 font-bold">Restart Game</div>
+					<div>
+						Are you sure you want to restart the game? Your current game will
+						be lost.
+					</div>
+					<div className="flex justify-center items-center gap-10 mt-4">
+						<button
+							className="rounded-lg font-bold px-8 py-1 border-2 border-black hover:bg-red-500 hover:shadow-lg"
+							onClick={() => {
+								if(changeModeTo.length>0) {
+									setGameMode(changeModeTo);
+								}
+								setChangeModeTo("");
+								restartGame();
+								setRestartClicked(false);
+							}}
+						>
+							Yes
+						</button>
+						<button
+							className="rounded-lg font-bold px-8 py-1 border-2 border-black hover:bg-green-500 hover:shadow-lg"
+							onClick={() => {
+								setChangeModeTo("");
+								setRestartClicked(false);
+							}}
+						>
+							No
+						</button>
+					</div>
+				</div>
+			</Modal>
+			<Backdrop
+				sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+				open={loading}
+			>
+				<CircularProgress color="inherit" />
+			</Backdrop>
+			<Snackbar
+				open={snackbarOpen}
+				autoHideDuration={5000}
+				onClose={()=>{setSnackbarOpen(false)}}
+				message={snackbarMessage}
+			/>
+			
 			<div className="font-bold text-sm">Select a Game Mode:</div>
 			<div className="justify-evenly flex gap-2 mt-2">
 					<button
 						className={`${buttonStyles} ${gameMode === "PvAI" ? "bg-gradient-to-tr from-orange-100 via-red-100 to-pink-100 border-orange-500 shadow-lg" : ""
 						}`}
-						onClick={() => setGameMode("PvAI")}
+						onClick={() => {
+							if(gameBegan) {
+								setChangeModeTo("PvAI")
+								setRestartClicked(true);
+							}
+							else{
+								setGameMode("PvAI");
+							}
+						}}
 						disabled={isJoined}
 					>
 						<BsPerson size={32} />
@@ -189,7 +296,15 @@ function GameMode() {
 					<button
 						className={`${buttonStyles} ${gameMode === "PvP" ? "bg-gradient-to-tr from-orange-100 via-red-100 to-pink-100 border-orange-500 shadow-lg" : ""
 						}`}
-						onClick={() => setGameMode("PvP")}
+						onClick={() => {
+							if(gameBegan) {
+								setChangeModeTo("PvP")
+								setRestartClicked(true);
+							}
+							else{
+								setGameMode("PvP");
+							}
+						}}
 						disabled={isJoined}
 					>
 						<BsPerson size={32} />
@@ -198,7 +313,15 @@ function GameMode() {
 					<button
 						className={`${buttonStyles} ${gameMode === "PvO" ? "bg-gradient-to-tr from-orange-100 via-red-100 to-pink-100 border-orange-500 shadow-lg" : ""
 						}`}
-						onClick={() => setGameMode("PvO")}
+						onClick={() => {
+							if(gameBegan) {
+								setChangeModeTo("PvO")
+								setRestartClicked(true);
+							}
+							else {
+								setGameMode("PvO");
+							}
+						}}
 					>
 						<BsPerson size={32} />
 						<HiGlobeAsiaAustralia size={32} />
@@ -228,7 +351,7 @@ function GameMode() {
 							{!isHost && (
 								<div className="flex">
 									<button
-										className={`${buttonStyles}`}
+										className={`${buttonStyles} flex-grow`}
 										onClick={generateroomNo}
 									>
 										Host a new game
@@ -242,17 +365,30 @@ function GameMode() {
 							)}
 							{roomNo && isHost && (
 								<div className="flex gap-2">
-									<input
-										className={`${buttonStyles} w-48`}
-										inputMode="none"
-										value={roomNo}
-										disabled={true}
-									/>
+									<Tooltip title="Click to Copy room Id">
+										<div
+											className={`${buttonStyles} w-48`}
+											onClick={() => {
+												navigator.clipboard.writeText(roomNo);
+												setSnackbarOpen(true);
+												setSnackbarMessage(`Copied Room Id: ${roomNo}`);
+											}}
+											role="button"
+											tabIndex={0}
+										>
+											{roomNo}
+										</div>
+									</Tooltip>
 									<button
-										className={`${buttonStyles} bg-red-500`}
-										onClick={leaveRoom}
+										className={`${buttonStyles} bg-red-500 flex-grow`}
+										onClick={() => {
+											leaveRoom().then(() => {
+												restartGame();
+											});
+										
+										}}
 									>
-										{isJoined ? "Leave" : "Join"}
+									{isJoined ? "Leave" : "Join"}
 									</button>
 								</div>
 							)}
@@ -261,7 +397,7 @@ function GameMode() {
 					
 					{!isHost && (
 						<div>
-							{!roomNo && <div className="mt-2 font-bold">Or</div>}
+							{!roomNo && <div className=" font-bold">Or</div>}
 							
 							<div className="flex gap-2">
 								<input
@@ -275,7 +411,9 @@ function GameMode() {
 									className={`${buttonStyles} ${isJoined ? "bg-red-500" : ""}`}
 									onClick={() => {
 										if (isJoined) {
-											leaveRoom();
+											leaveRoom().then(() => {
+												restartGame();
+											});
 										} else {
 											roomNo && joinRoom();
 										}

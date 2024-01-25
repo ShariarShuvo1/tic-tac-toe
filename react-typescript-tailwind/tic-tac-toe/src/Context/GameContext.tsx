@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import Player from "../Models/Player";
+import Slot from "../Models/Slot";
 
 export const GameContext = createContext({
 	player1: new Player("Player 1", "Not Host", 9932, "Inactive"),
@@ -20,4 +21,20 @@ export const GameContext = createContext({
 	setGameBegan: (value: boolean) => {},
 	modalOpen: false,
 	setModalOpen: (value: boolean) => {},
+	playerJoined: false,
+	setPlayerJoined: (value: boolean) => {},
+	gameBoard: [
+		new Slot(),
+		new Slot(),
+		new Slot(),
+		new Slot(),
+		new Slot(),
+		new Slot(),
+		new Slot(),
+		new Slot(),
+		new Slot(),
+	],
+	setGameBoard: (value: Slot[]) => {},
+	currentPlayer: "player_1",
+	setCurrentPlayer: (value: string) => {},
 });

@@ -3,8 +3,6 @@ import React, {useContext, useEffect, useState} from "react";
 import {MdNavigateNext, MdNavigateBefore} from "react-icons/md";
 import {CiPlay1, CiPause1} from "react-icons/ci";
 import Slot from "../../../Models/Slot";
-import Player from "../../../Models/Player";
-import {GameContext} from "../../../Context/GameContext";
 
 interface PreviewProps {
 	game: Game;
@@ -135,7 +133,7 @@ function Replay(props: PreviewProps) {
 		if (indexStack.length > 0) {
 			let tempIndexStack = [...indexStack];
 			let indexToInsert = tempIndexStack.pop();
-			if (indexToInsert != undefined) {
+			if (indexToInsert !== undefined) {
 				let tempSlots = [...slots];
 				tempSlots[indexToInsert] = gameBoard[indexToInsert];
 				setCurrentStatus("Click Next to proceed");
@@ -203,44 +201,44 @@ function Replay(props: PreviewProps) {
 					<div className="flex justify-center items-center text-center">
 						<div
 							className={`${buttonDesign} ${winningCombination && winningCombination.includes(0) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
-							{gameBoard[0].played ? (gameBoard[0].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+							{gameBoard[0].played ? (gameBoard[0].player?.sign === game.player1.sign ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 						</div>
 					</div>
 					<div
 						className={`${buttonDesign} ${winningCombination && winningCombination.includes(1) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
-						{gameBoard[1].played ? (gameBoard[1].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+						{gameBoard[1].played ? (gameBoard[1].player?.sign === game.player1.sign ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					<div
 						className={`${buttonDesign} ${winningCombination && winningCombination.includes(2) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
-						{gameBoard[2].played ? (gameBoard[2].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+						{gameBoard[2].played ? (gameBoard[2].player?.sign === game.player1.sign ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					
 					
 					<div
 						className={`${buttonDesign} ${winningCombination && winningCombination.includes(3) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
-						{gameBoard[3].played ? (gameBoard[3].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+						{gameBoard[3].played ? (gameBoard[3].player?.sign === game.player1.sign ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					<div
 						className={`${buttonDesign} ${winningCombination && winningCombination.includes(4) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
-						{gameBoard[4].played ? (gameBoard[4].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+						{gameBoard[4].played ? (gameBoard[4].player?.sign === game.player1.sign ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					<div
 						className={`${buttonDesign} ${winningCombination && winningCombination.includes(5) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
-						{gameBoard[5].played ? (gameBoard[5].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+						{gameBoard[5].played ? (gameBoard[5].player?.sign === game.player1.sign ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					
 					
 					<div
 						className={`${buttonDesign} ${winningCombination && winningCombination.includes(6) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
-						{gameBoard[6].played ? (gameBoard[6].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+						{gameBoard[6].played ? (gameBoard[6].player?.sign === game.player1.sign ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					<div
 						className={`${buttonDesign} ${winningCombination && winningCombination.includes(7) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
-						{gameBoard[7].played ? (gameBoard[7].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+						{gameBoard[7].played ? (gameBoard[7].player?.sign === game.player1.sign ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 					<div
 						className={`${buttonDesign} ${winningCombination && winningCombination.includes(8) ? buttonIncludeDesign : isDraw ? buttonDrawDesign : buttonEmptyDesign}`}>
-						{gameBoard[8].played ? (gameBoard[8].player === game.player1 ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
+						{gameBoard[8].played ? (gameBoard[8].player?.sign === game.player1.sign ? String.fromCodePoint(game.player1.sign) : String.fromCodePoint(game.player2.sign)) : ""}
 					</div>
 				</div>
 			</div>

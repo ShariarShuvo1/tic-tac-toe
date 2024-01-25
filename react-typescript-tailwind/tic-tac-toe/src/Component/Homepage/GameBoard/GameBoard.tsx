@@ -31,6 +31,9 @@ function GameBoard({gameBoard, currentPlayer, winningCombination, isDraw, gameCl
 				<Modal
 					open={gameFinished}
 					onClose={() => {
+						if(gameMode === "PvO" && !isHost) {
+							restartGame();
+						}
 						setGameFinished(false);
 					}}
 					className="flex justify-center items-center"

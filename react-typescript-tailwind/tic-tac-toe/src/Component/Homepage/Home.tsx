@@ -3,29 +3,36 @@ import Slot from "../../Models/Slot";
 import Game from "../../Models/Game";
 import HistoryPage from "./HistoryPage/HistoryPage";
 import GameBoard from "./GameBoard/GameBoard";
-import { Modal } from "@mui/material";
+import {Modal, Snackbar, CircularProgress, Tooltip} from "@mui/material";
 import Replay from "./Replay/Replay";
 import { GameContext } from "../../Context/GameContext";
 import Player from "../../Models/Player";
 import { VscDebugRestart } from "react-icons/vsc";
-import {collection, doc, onSnapshot, setDoc, writeBatch, Timestamp} from "firebase/firestore";
+import {collection, doc, onSnapshot, setDoc, writeBatch} from "firebase/firestore";
 import {db} from "../../firebase";
+import cloneDeep from 'lodash/cloneDeep';
 
 function Home() {
-	const [gameBoard, setGameBoard] = useState<Slot[]>([
-		new Slot(),
-		new Slot(),
-		new Slot(),
-		new Slot(),
-		new Slot(),
-		new Slot(),
-		new Slot(),
-		new Slot(),
-		new Slot(),
-	]);
 	
-	const { player1, setPlayer1, player2, setPlayer2, gameMode, gameDifficulty, roomNo, isHost , isJoined, gameBegan, setGameBegan, modalOpen, setGameMode} =
-		useContext(GameContext);
+	const { player1,
+		setPlayer1,
+		player2,
+		setPlayer2,
+		gameMode,
+		gameDifficulty,
+		roomNo,
+		isHost ,
+		isJoined,
+		gameBegan,
+		setGameBegan,
+		modalOpen,
+		setGameMode,
+		setIsJoined,
+		setIsHost,
+		setRoomNo,
+		gameBoard,
+		setGameBoard
+	} = useContext(GameContext);
 	
 	const [currentPlayer, setCurrentPlayer] = useState("player_1");
 	const [winningCombination, setWinningCombination] = useState<number[] | null>(
@@ -37,6 +44,8 @@ function Home() {
 	const [selectedGame, setSelectedGame] = useState<Game | null>(null);
 	const [restartClicked, setRestartClicked] = useState<boolean>(false);
 	const [gameFinished, setGameFinished] = useState<boolean>(false);
+	const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+	const [snackbarMessage, setSnackbarMessage] = React.useState("");
 	
 	function easyAI() {
 		let tempGameBoard: Slot[] = [...gameBoard];
@@ -232,10 +241,10 @@ function Home() {
 	}
 	
 	function saveCurrentGame(verdict: string, winner?: Player) {
-		let tempGameBoard: Slot[] = [...gameBoard];
+		let tempGameBoard: Slot[] = cloneDeep([...gameBoard]);
 		let tempGame: Game = new Game(
-			player1,
-			player2,
+			cloneDeep(player1),
+			cloneDeep(player2),
 			tempGameBoard,
 			new Date(),
 			gameMode,
@@ -347,7 +356,6 @@ function Home() {
 			]);
 		}
 		
-		
 		setCurrentPlayer("player_1");
 		setIsDraw(false);
 		setGameBegan(false);
@@ -358,13 +366,19 @@ function Home() {
 		if (gameMode==="PvO" && roomNo && isJoined) {
 			const roomRef = collection(db, 'rooms', roomNo, 'Player');
 			const unsubscribe = onSnapshot(roomRef, (querySnapshot) => {
-				
+				let prevStat2 = player2.status;
+				let prevStat1 = player1.status;
 				if(isHost){
 					let tempPlayer2: Player = player2;
 					tempPlayer2.name = querySnapshot.docs[1].data().name;
 					tempPlayer2.status = querySnapshot.docs[1].data().status;
 					tempPlayer2.sign = querySnapshot.docs[1].data().sign;
 					tempPlayer2.type = querySnapshot.docs[1].data().type;
+					if(prevStat2 === "Inactive" && tempPlayer2.status === "Active"){
+						setSnackbarMessage(`${tempPlayer2.name} Joined The game`);
+						setSnackbarOpen(true);
+						createNewSlots();
+					}
 					setPlayer2(tempPlayer2);
 				}
 				else {
@@ -375,6 +389,14 @@ function Home() {
 					tempPlayer1.type = querySnapshot.docs[0].data().type;
 					setPlayer1(tempPlayer1);
 				}
+				if(!isHost && prevStat1 === "Active" && player1.status === "Inactive"){
+					leaveRoom(true);
+				}
+				if(isHost && prevStat2 === "Active" && player2.status === "Inactive"){
+					setSnackbarMessage(`${player2.name} Left The game`);
+					setSnackbarOpen(true);
+				}
+				
 				
 			});
 			
@@ -552,6 +574,19 @@ function Home() {
 				count+=1;
 			}
 		}
+		if(count===0){
+			setCurrentPlayer("player_1");
+		
+		}
+	}, [gameBoard]);
+	
+	useEffect(() => {
+		let count = 0;
+		for (let i = 0; i < 9; i++) {
+			if(gameBoard[i].played){
+				count+=1;
+			}
+		}
 		if (!winningCombination && gameMode === "PvO" && count>0){
 			if(!winCheck()){
 				if(count%2===0){
@@ -562,16 +597,115 @@ function Home() {
 				}
 			}
 		}
+		if(gameMode === "PvO" && count===0 && !isHost){
+			restartGame();
+			setWinningCombination(null);
+			setGameFinished(false);
+		}
 	}, [gameBoard]);
 	
 	useEffect(() => {
-		if(gameMode === "PvO" && !modalOpen && !roomNo){
+		restartGame();
+	}, [gameMode]);
+	
+	useEffect(() => {
+		if(gameMode === "PvO" && !modalOpen && !isJoined){
+			setSnackbarOpen(true);
+			setSnackbarMessage("Game Mode Changed to Player vs Computer as you are not in a room");
 			setGameMode("PvAI");
 		}
 	}, [gameMode, modalOpen]);
 	
+	const leaveRoom = async (hostLeft:boolean = false) => {
+		if(isJoined){
+			if(isHost) {
+				let docRef = doc(collection(db, "rooms", roomNo, "Player"), 'player1');
+				await setDoc(docRef, {
+					name: player1.name,
+					sign: player1.sign,
+					type: "Not Host",
+					status: "Inactive"
+				});
+				setPlayer1({...player1, status: "Inactive", type: "Not Host"});
+			}
+			else {
+				let docRef = doc(collection(db, "rooms", roomNo, "Player"), 'player2');
+				await setDoc(docRef, {
+					name: player2.name,
+					sign: player2.sign,
+					type: "Not Host",
+					status: "Inactive"
+				});
+				setPlayer2({...player2, status: "Inactive", type: "Not Host"});
+			}
+			setIsJoined(false);
+			setIsHost(false);
+			setGameBegan(false);
+			setSnackbarOpen(true);
+			setSnackbarMessage(`Successfully left the room: ${roomNo}`);
+			setRoomNo("");
+			setSnackbarOpen(true);
+			if(hostLeft){
+				setSnackbarMessage(`${player1.name} (Host) Left The game. So The game has Ended.`);
+			}
+			else{
+				setSnackbarMessage("Game Mode Changed to Player vs Computer as you are not in a room");
+			}
+			setGameMode("PvAI");
+		}
+		else {
+			setSnackbarOpen(true);
+			setSnackbarMessage(`You are not joined in any room`);
+		}
+	}
+	
 	return (
 		<div className=" bg-cyan-50 dark:bg-gray-900">
+			<Snackbar
+				open={snackbarOpen}
+				autoHideDuration={5000}
+				onClose={()=>{setSnackbarOpen(false)}}
+				message={snackbarMessage}
+			/>
+			{!modalOpen && gameMode === "PvO" && roomNo && isHost && (
+				<div>
+					<Modal
+						open={player2.status==="Inactive"}
+						className="flex justify-center items-center"
+					>
+						<div className="bg-black bg-opacity-40 p-4 rounded-lg">
+							<div className="text-white font-extrabold text-4xl text-center">
+								Waiting for opponent to join...
+							</div>
+							<div className="mt-10 text-white font-extrabold text-4xl text-center">
+								Room ID:
+								<Tooltip title="Click to Copy room Id">
+									<span
+										className="ms-1 font-bold hover:cursor-copy text-green-500"
+										onClick={()=>{
+											navigator.clipboard.writeText(roomNo);
+											setSnackbarOpen(true);
+											setSnackbarMessage(`Copied Room Id: ${roomNo}`);
+										}}
+									>
+										{roomNo}
+									</span>
+								</Tooltip>
+							</div>
+							<div className="flex justify-center">
+								<CircularProgress color="secondary" className="mt-10" />
+							</div>
+							<div className="flex justify-center items-center">
+								<button onClick={()=>{
+									leaveRoom();
+								}} className="bg-red-500 p-4 rounded-lg mt-10 hover:shadow-2xl hover:bg-red-700 text-5xl">
+									Leave Room
+								</button>
+							</div>
+						</div>
+					</Modal>
+				</div>
+			)}
 			<div>
 				<Modal
 					open={restartClicked}
@@ -607,10 +741,12 @@ function Home() {
 			<div>
 				{selectedGame && (
 					<Modal open={previewVisible} onClose={disablePreviewVisible}>
-						<Replay
-							game={selectedGame}
-							disablePreview={disablePreviewVisible}
-						/>
+						<div>
+							<Replay
+								game={selectedGame}
+								disablePreview={disablePreviewVisible}
+							/>
+						</div>
 					</Modal>
 				)}
 			</div>
@@ -631,7 +767,7 @@ function Home() {
 						allGames={allGames}
 					/>
 					<div
-						className=" mt-10 rounded-lg hover:cursor-pointer flex justify-center border-2 border-black dark:border-white p-2 font-bold dark:text-white hover:bg-yellow-50 dark:hover:text-black hover:border-orange-500 dark:hover:border-orange-500"
+						className="group mt-10 rounded-lg hover:cursor-pointer flex justify-center border-2 border-black dark:border-white p-2 font-bold dark:text-white hover:bg-yellow-50 dark:hover:text-black hover:border-orange-500 dark:hover:border-orange-500"
 						onClick={() => {
 							if (gameBegan && !winningCombination && !isDraw) {
 								setRestartClicked(true);
@@ -641,7 +777,7 @@ function Home() {
 							}
 						}}
 					>
-						<VscDebugRestart size={40} />
+						<VscDebugRestart className="group-hover:-rotate-90 transition-transform transform" size={40} />
 						<span className="text-3xl ms-2">Restart</span>
 					</div>
 				</div>
