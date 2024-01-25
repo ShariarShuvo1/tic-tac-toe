@@ -1,10 +1,24 @@
 import React, {useState} from 'react';
 import './App.css';
-import Navbar from "./Component/Navbar/Navbar";
+import {RouterProvider} from "react-router";
 import Player from "./Models/Player";
 import {GameContext} from "./Context/GameContext";
-import Home from "./Component/Homepage/Home";
 import Slot from "./Models/Slot";
+import {createBrowserRouter} from "react-router-dom";
+import RoutingPage from "./Component/RoutingPage";
+import Homepage from "./Component/Homepage";
+
+const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <RoutingPage />,
+		children: [
+			{ path: "/", element: <Homepage /> },
+			{ path: "/:roomId", element: <Homepage />},
+			{ path: "*", element: <Homepage />},
+		],
+	},
+]);
 
 function App() {
 	const [player1, setPlayer1] = useState<Player>(new Player("Player 1", "Not Host", 9932, "Inactive"))
@@ -59,10 +73,11 @@ function App() {
 				setCurrentPlayer,
 			}}
 		>
-			<div>
-				<Navbar/>
-				<Home/>
-			</div>
+			{/*<div>*/}
+			{/*	<Navbar/>*/}
+			{/*	<Home/>*/}
+			{/*</div>*/}
+			<RouterProvider router={router}></RouterProvider>
 		</GameContext.Provider>
 	);
 }

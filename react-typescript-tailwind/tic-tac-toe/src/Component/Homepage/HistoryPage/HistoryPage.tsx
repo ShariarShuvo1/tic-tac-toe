@@ -13,7 +13,7 @@ interface Props {
 function HistoryPage({allGames, setAllGames, setPreviewVisible, setSelectedGame}: Props) {
 	
 	return (
-		<div>
+		<div className="mb-10">
 			<div className={` flex flex-grow justify-center items-center `}>
 				<div className="rounded-lg border-2 border-black">
 					<div

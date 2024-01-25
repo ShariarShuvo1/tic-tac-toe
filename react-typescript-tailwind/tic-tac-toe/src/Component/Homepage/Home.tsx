@@ -614,7 +614,7 @@ function Home() {
 			setSnackbarMessage("Game Mode Changed to Player vs Computer as you are not in a room");
 			setGameMode("PvAI");
 		}
-	}, [gameMode, modalOpen]);
+	}, [gameMode, modalOpen, isJoined]);
 	
 	const leaveRoom = async (hostLeft:boolean = false) => {
 		if(isJoined){
@@ -663,7 +663,7 @@ function Home() {
 		<div className=" bg-cyan-50 dark:bg-gray-900">
 			<Snackbar
 				open={snackbarOpen}
-				autoHideDuration={5000}
+				autoHideDuration={2000}
 				onClose={()=>{setSnackbarOpen(false)}}
 				message={snackbarMessage}
 			/>
@@ -692,13 +692,30 @@ function Home() {
 									</span>
 								</Tooltip>
 							</div>
+							<div className="mt-10 text-white font-extrabold text-4xl text-center">
+								<div>
+									Or Share The URL with your friend
+								</div>
+								<Tooltip title="Click to Copy The URL">
+									<span
+										className="ms-1 text-lg font-bold hover:cursor-copy text-green-500"
+										onClick={()=>{
+											navigator.clipboard.writeText(`https://tic-tac-toe-zeta-lime-16.vercel.app/${roomNo}`);
+											setSnackbarOpen(true);
+											setSnackbarMessage(`URL copied to clipboard`);
+										}}
+									>
+										https://tic-tac-toe-zeta-lime-16.vercel.app/{roomNo}
+									</span>
+								</Tooltip>
+							</div>
 							<div className="flex justify-center">
 								<CircularProgress color="secondary" className="mt-10" />
 							</div>
 							<div className="flex justify-center items-center">
 								<button onClick={()=>{
 									leaveRoom();
-								}} className="bg-red-500 p-4 rounded-lg mt-10 hover:shadow-2xl hover:bg-red-700 text-5xl">
+								}} className="bg-red-500 p-2 font-bold rounded-lg mt-10 hover:shadow-2xl hover:bg-red-700 text-5xl">
 									Leave Room
 								</button>
 							</div>
@@ -750,7 +767,7 @@ function Home() {
 					</Modal>
 				)}
 			</div>
-			<div className="min-h-[calc(100vh-66px)] flex flex-wrap justify-center items-center gap-10">
+			<div className="min-h-[calc(100vh-78px)] flex flex-wrap justify-center items-center gap-10">
 				<div>
 					<GameBoard
 						gameBoard={gameBoard}

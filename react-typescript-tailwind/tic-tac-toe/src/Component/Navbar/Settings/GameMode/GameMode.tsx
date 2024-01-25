@@ -39,8 +39,7 @@ function GameMode() {
 		setGameBegan,
 		setPlayerJoined,
 		setGameBoard,
-		setCurrentPlayer,
-		setModalOpen
+		setCurrentPlayer
 	} = useContext(GameContext);
 	
 	function restartGame() {
@@ -135,7 +134,7 @@ function GameMode() {
 			setSnackbarMessage(`Created New Room: ${newRoomNo}`);
 		}
 		setLoading(false);
-		setPlayerJoined(true);
+		setPlayerJoined(false);
 	};
 	
 	const checkRoomExists = async (roomNo: string) => {
@@ -222,6 +221,14 @@ function GameMode() {
 		setLoading(false);
 	};
 	
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			if (!isJoined && roomNo) {
+				joinRoom();
+			}
+		}
+	};
+	
 	return (
 		<div className="mt-4">
 			<Modal
@@ -230,9 +237,9 @@ function GameMode() {
 				className="flex justify-center items-center"
 			>
 				<div className="bg-gradient-to-tr from-fuchsia-300 to-rose-200 max-w-72 rounded-lg p-4">
-					<div className="text-3xl mb-4 font-bold">Restart Game</div>
+					<div className="text-3xl mb-4 font-bold">Switch Game</div>
 					<div>
-						Are you sure you want to restart the game? Your current game will
+						Are you sure you want to switch game mode? Your current game will
 						be lost.
 					</div>
 					<div className="flex justify-center items-center gap-10 mt-4">
@@ -269,7 +276,7 @@ function GameMode() {
 			</Backdrop>
 			<Snackbar
 				open={snackbarOpen}
-				autoHideDuration={5000}
+				autoHideDuration={2000}
 				onClose={()=>{setSnackbarOpen(false)}}
 				message={snackbarMessage}
 			/>
@@ -406,6 +413,7 @@ function GameMode() {
 									disabled={isJoined}
 									value={roomNo}
 									onChange={(e) => setRoomNo(e.target.value)}
+									onKeyPress={handleKeyPress}
 								/>
 								<button
 									className={`${buttonStyles} ${isJoined ? "bg-red-500" : ""}`}

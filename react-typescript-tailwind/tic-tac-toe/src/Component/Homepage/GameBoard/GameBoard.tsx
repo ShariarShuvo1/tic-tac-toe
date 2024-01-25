@@ -22,8 +22,9 @@ interface Props {
 }
 
 function GameBoard({gameBoard, currentPlayer, winningCombination, isDraw, gameClicked, gameFinished, setGameFinished, setRestartClicked, restartGame, setPreviewVisible, setSelectedGame, allGames }: Props) {
-	const buttonStyle: string = 'font-bold text-black text-7xl rounded-md w-24 h-24 transition duration-100 ease-in-out border-2 border-black hover:border-yellow-900 hover:bg-amber-300 hover:shadow-3xl';
+	const buttonStyle: string = 'font-bold text-black text-7xl rounded-md w-24 h-24 transition duration-100 ease-in-out border-2 border-black ';
 	const {player1, player2, gameMode, isHost} = useContext(GameContext);
+	const disabledButtonStyle: string = 'pointer-events-none';
 	
 	return (
 		<div>
@@ -120,14 +121,14 @@ function GameBoard({gameBoard, currentPlayer, winningCombination, isDraw, gameCl
 			<div className="flex flex-grow justify-center items-center min-w-80">
 				<div className={` justify-center items-center mt-4`}>
 					<div
-						className={`grid grid-cols-3 gap-2 rounded-lg p-4 bg-gradient-to-tr from-blue-400 via-violet-400 to-fuchsia-500`}>
+						className={`grid grid-cols-3 gap-2 rounded-lg p-4 bg-gradient-to-tr from-purple-500 via-fuchsia-500 to-pink-500`}>
 						{gameBoard.map((cell, index) => (
 							<button
 								key={index}
 								onClick={() => gameClicked(index)}
-								className={`${buttonStyle} ${(gameBoard[index].played || winningCombination) && 'pointer-events-none'} ${
+								className={`${buttonStyle} hover:border-yellow-900 hover:bg-amber-300 hover:shadow-3xl ${(gameBoard[index].played || winningCombination) && 'pointer-events-none'} ${
 									winningCombination && winningCombination.includes(index) ? 'bg-amber-100 border-orange-500' : ''
-								} ${isDraw && "bg-orange-400"}`}
+								} ${isDraw && "bg-orange-400"} ${gameBoard[index].played || winningCombination !== null || isDraw || gameFinished || (gameMode === "PvAI" && currentPlayer === "player_2") || (gameMode === "PvO" && isHost && currentPlayer === "player_2") || (gameMode === "PvO" && !isHost && currentPlayer === "player_1") ? disabledButtonStyle : ''}`}
 								disabled={gameBoard[index].played || winningCombination !== null || isDraw || gameFinished || (gameMode === "PvAI" && currentPlayer === "player_2") || (gameMode === "PvO" && isHost && currentPlayer === "player_2") || (gameMode === "PvO" && !isHost && currentPlayer === "player_1")}
 							>
 								{gameBoard[index].played ? (gameBoard[index].player === player1 ? String.fromCodePoint(player1.sign) : String.fromCodePoint(player2.sign)) : ''}

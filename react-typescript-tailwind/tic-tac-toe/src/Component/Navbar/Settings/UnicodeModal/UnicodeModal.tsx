@@ -111,6 +111,11 @@ function UnicodeModal(props: UnicodeModalProps) {
 		};
 	}, []);
 	
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			search();
+		}
+	};
 	
 	return (
 		<Modal
@@ -176,6 +181,7 @@ function UnicodeModal(props: UnicodeModalProps) {
 						placeholder="Search"
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
+						onKeyPress={handleKeyPress}
 					/>
 					<button
 						className={`${searchOn ? "bg-gradient-to-tr from-orange-100 via-red-100 to-pink-100 border-orange-500 shadow-lg" : ""} ms-2 px-2 border-2 border-black text-center font-bold rounded-lg hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out hover:cursor-pointer`}

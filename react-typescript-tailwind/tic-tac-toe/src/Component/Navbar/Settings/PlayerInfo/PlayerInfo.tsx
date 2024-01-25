@@ -7,6 +7,7 @@ import UnicodeModal from "../UnicodeModal/UnicodeModal";
 import {collection, doc, setDoc} from "firebase/firestore";
 import {db} from "../../../../firebase";
 import Player from "../../../../Models/Player";
+import {Tooltip} from "@mui/material";
 
 function PlayerInfo(props: {
 	isHost: boolean,
@@ -20,7 +21,8 @@ function PlayerInfo(props: {
 		gameMode,
 		setGameMode,
 		roomNo,
-		gameBegan
+		gameBegan,
+		setModalOpen
 	} = useContext(GameContext);
 	
 	const {isHost, isJoined} = props;
@@ -104,6 +106,12 @@ function PlayerInfo(props: {
 		}
 	}, [gameMode]);
 	
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			setModalOpen(false);
+		}
+	};
+	
 	return (
 		<div className="mt-2">
 			<UnicodeModal signSelectorOpen={signSelectorOpen} setSignSelectorOpen={setSignSelectorOpen}
@@ -115,25 +123,31 @@ function PlayerInfo(props: {
 			{!(isJoined && !isHost) && (
 				<div className="flex mt-2">
 					<BsPerson size={32}/>
-					<input
-						className="border-2 border-black rounded-lg px-2 py-1 ml-2 w-40 font-bold"
-						type="text"
-						placeholder="Player 1"
-						value={playerName1}
-						onChange={(e) => setPlayerName1(e.target.value)}
-						maxLength={8}
-						disabled={gameBegan}
-					/>
-					<button
-						className="border-2 border-black rounded-lg px-2 py-1 ml-2 w-10 font-bold hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out"
-						onClick={() => {
-							setSignSelectorOpen(true);
-							setSettingFor('Player 1');
-						}}
-						disabled={gameBegan}
-					>
-						{String.fromCodePoint(playerSign1)}
-					</button>
+					<Tooltip title="Change Name">
+						<input
+							className="border-2 border-black rounded-lg px-2 py-1 ml-2 w-40 font-bold"
+							type="text"
+							placeholder="Player 1"
+							value={playerName1}
+							onChange={(e) => setPlayerName1(e.target.value)}
+							onKeyPress={handleKeyPress}
+							maxLength={8}
+							disabled={gameBegan}
+						/>
+					</Tooltip>
+					<Tooltip title="Change Sign" placement="right">
+						<button
+							className="border-2 border-black rounded-lg px-2 py-1 ml-2 w-10 font-bold hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out"
+							onClick={() => {
+								setSignSelectorOpen(true);
+								setSettingFor('Player 1');
+							}}
+							disabled={gameBegan}
+						>
+							{String.fromCodePoint(playerSign1)}
+						</button>
+					</Tooltip>
+				
 				</div>
 			)}
 			{(!isHost) && (
@@ -145,25 +159,31 @@ function PlayerInfo(props: {
 							<BsPersonFill size={32}/>
 						)
 					}
-					<input
-						className="border-2 border-black rounded-lg px-2 py-1 ml-2 w-40 font-bold"
-						type="text"
-						placeholder="Player 2"
-						value={playerName2}
-						onChange={(e) => setPlayerName2(e.target.value)}
-						maxLength={8}
-						disabled={gameMode === 'PvAI' || gameBegan}
-					/>
-					<button
-						className="border-2 border-black rounded-lg px-2 py-1 ml-2 w-10 font-bold hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out"
-						onClick={() => {
-							setSignSelectorOpen(true);
-							setSettingFor('Player 2');
-						}}
-						disabled={gameBegan}
-					>
-						{String.fromCodePoint(playerSign2)}
-					</button>
+					<Tooltip title="Change Name">
+						<input
+							className="border-2 border-black rounded-lg px-2 py-1 ml-2 w-40 font-bold"
+							type="text"
+							placeholder="Player 2"
+							value={playerName2}
+							onChange={(e) => setPlayerName2(e.target.value)}
+							onKeyPress={handleKeyPress}
+							maxLength={8}
+							disabled={gameMode === 'PvAI' || gameBegan}
+						/>
+					</Tooltip>
+					<Tooltip title="Change Sign" placement="right">
+						<button
+							className="border-2 border-black rounded-lg px-2 py-1 ml-2 w-10 font-bold hover:bg-gradient-to-tr hover:from-orange-50 hover:to-red-50 hover:shadow-lg transition-all duration-300 ease-in-out"
+							onClick={() => {
+								setSignSelectorOpen(true);
+								setSettingFor('Player 2');
+							}}
+							disabled={gameBegan}
+						>
+							{String.fromCodePoint(playerSign2)}
+						</button>
+					</Tooltip>
+				
 				</div>
 			)}
 		</div>
